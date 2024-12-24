@@ -1,4 +1,4 @@
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useId } from 'react';
 import { AnimatePresence, motion, MotionConfig } from 'framer-motion';
 import { X as XIcon } from 'lucide-react';
 
