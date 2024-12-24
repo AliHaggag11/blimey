@@ -12,8 +12,11 @@ import { ParallaxScroll } from "./ui/parallax-scroll";
 import { ImageGallery } from "./ui/image-gallery";
 import { Reveal } from "./ui/reveal";
 import { ScrollText } from "./ui/scroll-text";
+import { MenuModal } from "./ui/menu-modal";
+import { useState } from 'react';
 
 export default function LandingPage() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { scrollYProgress } = useScroll();
 
   return (
@@ -63,19 +66,6 @@ export default function LandingPage() {
         </motion.div>
 
         <div className="relative z-20 text-center text-white px-4 max-w-4xl mx-auto">
-          {/* Logo */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-12"
-          >
-            <img 
-              src="/imgs/logo.png" 
-              alt="Blimey Logo" 
-              className="h-24 md:h-32 mx-auto"
-            />
-          </motion.div>
-          
           <RevealText
             text="Welcome to"
             delay={0.2}
@@ -101,11 +91,12 @@ export default function LandingPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8 }}
-            className="space-x-4 relative"
+            className="flex flex-col sm:flex-row gap-4 relative px-4 sm:px-0"
           >
             <Button 
               size="lg" 
-              className="bg-white text-black hover:bg-white hover:scale-105 transition-all duration-300 shadow-xl"
+              className="bg-white text-black hover:bg-white hover:scale-105 transition-all duration-300 
+                shadow-xl w-full sm:w-auto"
             >
               Book a Consultation
               <ArrowRight className="ml-2 h-4 w-4" />
@@ -113,9 +104,11 @@ export default function LandingPage() {
             <Button 
               size="lg" 
               variant="outline"
-              className="bg-white/5 border-white/20 text-white hover:bg-white/95 hover:text-black hover:scale-105 
-                transition-all duration-300 shadow-xl backdrop-blur-sm hover:border-transparent 
-                hover:shadow-white/20 hover:shadow-2xl"
+              className="bg-white/5 border-white/20 text-white hover:bg-white/95 hover:text-black 
+                hover:scale-105 transition-all duration-300 shadow-xl backdrop-blur-sm 
+                hover:border-transparent hover:shadow-white/20 hover:shadow-2xl
+                w-full sm:w-auto"
+              onClick={() => setIsMenuOpen(true)}
             >
               View Our Menus
             </Button>
@@ -238,26 +231,32 @@ export default function LandingPage() {
 
       {/* Stats Section */}
       <section className="py-24 bg-primary text-primary-foreground relative overflow-hidden">
+        {/* Enhanced background effects */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.08),transparent)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:80px_100%]" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100%_80px]" />
+        </div>
+
         <Reveal duration={1} blur={false}>
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.05),transparent)]" />
           <div className="relative max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-12">
             {[
               {
-                icon: <Star className="w-8 h-8 mx-auto mb-4" />,
+                icon: <Star className="w-8 h-8" />,
                 title: "Events Catered",
                 count: 500,
                 duration: 6,
                 suffix: "+"
               },
               {
-                icon: <Users className="w-8 h-8 mx-auto mb-4" />,
+                icon: <Users className="w-8 h-8" />,
                 title: "Happy Guests",
                 count: 50000,
                 duration: 7,
                 suffix: "+"
               },
               {
-                icon: <ChefHat className="w-8 h-8 mx-auto mb-4" />,
+                icon: <ChefHat className="w-8 h-8" />,
                 title: "Expert Chefs",
                 count: 15,
                 duration: 5,
@@ -272,12 +271,35 @@ export default function LandingPage() {
                 blur={false}
                 distance={30}
               >
-                <motion.div 
-                  className="text-center"
-                >
-                  {stat.icon}
-                  <CountUp end={stat.count} duration={stat.duration} suffix={stat.suffix} />
-                  <p className="text-primary-foreground/80">{stat.title}</p>
+                <motion.div className="text-center relative group">
+                  {/* Decorative circle */}
+                  <div className="absolute -inset-4 bg-white/5 rounded-xl opacity-0 group-hover:opacity-100 
+                    transition-all duration-700 -z-10" />
+                  
+                  {/* Icon with enhanced styling */}
+                  <div className="relative">
+                    <div className="absolute -inset-2 bg-white/10 rounded-full blur-xl opacity-0 
+                      group-hover:opacity-100 transition-all duration-700" />
+                    <div className="relative">
+                      <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-white/10 flex items-center 
+                        justify-center transform group-hover:scale-110 group-hover:bg-white/20
+                        text-white/90 group-hover:text-white
+                        transition-all duration-700">
+                        {stat.icon}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Count with enhanced styling */}
+                  <div className="mb-2 relative">
+                    <CountUp end={stat.count} duration={stat.duration} suffix={stat.suffix} />
+                    <div className="h-px w-12 bg-gradient-to-r from-transparent via-white/30 to-transparent 
+                      mx-auto mt-4 opacity-0 group-hover:opacity-100 transition-all duration-700" />
+                  </div>
+
+                  <p className="text-primary-foreground/70 font-light tracking-wide uppercase text-sm">
+                    {stat.title}
+                  </p>
                 </motion.div>
               </Reveal>
             ))}
@@ -355,8 +377,19 @@ export default function LandingPage() {
       </section>
 
       {/* Menu Preview Section */}
-      <section className="py-24 px-4 bg-secondary relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(0,0,0,0.02),transparent)]" />
+      <section className="py-24 px-4 relative overflow-hidden">
+        {/* Background Image with Frost Effect */}
+        <div className="absolute inset-0">
+          <img 
+            src="/imgs/saile-ilyas-SiwrpBnxDww-unsplash.jpg"
+            alt="Background"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 backdrop-blur-xl bg-black/40" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/30 to-background/50" />
+          <div className="absolute inset-0 backdrop-filter backdrop-brightness-90" />
+        </div>
+
         <Reveal duration={1}>
           <SectionHeading
             title="Our Signature Menus"
@@ -761,6 +794,19 @@ export default function LandingPage() {
           />
         ))}
       </motion.div>
+
+      <MenuModal isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)}>
+        <div className="p-4 sm:p-6 md:p-8">
+          <h2 className="text-3xl md:text-4xl font-serif mb-6 md:mb-8">Our Menus</h2>
+          <div className="aspect-[1/1.4] bg-muted rounded-lg flex items-center justify-center
+            border border-border/50">
+            <p className="text-muted-foreground text-center px-4">
+              <span className="block text-lg mb-2">Menu PDF Coming Soon</span>
+              <span className="text-sm">We're preparing something special for you</span>
+            </p>
+          </div>
+        </div>
+      </MenuModal>
 
     </div>
   );
