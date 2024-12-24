@@ -96,7 +96,7 @@ export default function LandingPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="text-7xl md:text-9xl font-serif mb-6 tracking-tight font-bold text-white [text-shadow:_0_1px_30px_rgb(0_0_0_/_40%)]"
+            className="text-7xl md:text-9xl font-serif mb-6 tracking-tight font-semibold text-white [text-shadow:_0_1px_30px_rgb(0_0_0_/_40%)]"
           >
             Blimey
           </motion.h1>
@@ -483,7 +483,7 @@ export default function LandingPage() {
                       >
                         {menu.icon}
                       </motion.div>
-                      <h3 className="text-2xl font-serif mb-6">{menu.title}</h3>
+                      <h3 className="text-2xl font-serif mb-6 font-medium">{menu.title}</h3>
                       <ul className="space-y-3">
                         {menu.items.map((item, i) => (
                           <motion.li
@@ -520,7 +520,7 @@ export default function LandingPage() {
         <Reveal duration={1}>
           <motion.div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-serif mb-6 relative inline-block">
+              <h2 className="text-4xl md:text-5xl font-serif mb-6 relative inline-block font-medium">
                 What Our Clients Say
                 <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-24 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
               </h2>
@@ -608,7 +608,7 @@ export default function LandingPage() {
         >
           <div className="relative">
             <Reveal duration={1}>
-              <h2 className="text-4xl md:text-5xl font-serif mb-6 relative inline-block">
+              <h2 className="text-4xl md:text-5xl font-serif mb-6 relative inline-block font-medium">
                 Get in Touch
                 <div className="absolute -bottom-4 left-0 w-32 h-[2px] bg-gradient-to-r from-white/40 to-transparent" />
               </h2>
@@ -751,45 +751,42 @@ export default function LandingPage() {
         {/* Background gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent" />
         
-        <motion.div 
-          className="relative max-w-4xl mx-auto text-center px-4"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <h2 className="text-4xl md:text-6xl font-serif mb-8 relative inline-block">
-            Ready to Create Something Special?
-            <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-32 h-px 
-              bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
-          </h2>
-          <p className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed">
-            Let us help you plan your next extraordinary event. Our team is ready to create a unique experience tailored just for you.
-          </p>
-          <Button 
-            size="lg" 
-            className="bg-primary text-primary-foreground hover:bg-primary/90 
-              shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-500
-              group relative overflow-hidden"
-            onClick={() => {
-              // Smooth scroll to contact form
-              const contactForm = document.getElementById('contact-form');
-              if (contactForm) {
-                contactForm.scrollIntoView({ behavior: 'smooth' });
-              }
-            }}
+        <Reveal duration={1}>
+          <motion.div 
+            className="relative max-w-4xl mx-auto text-center px-4"
           >
-            <span className="relative z-10 flex items-center">
-              Start Planning Your Event
-              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 
-                transition-transform duration-300" />
-            </span>
-            {/* Button hover effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/0 
-              via-white/20 to-primary/0 opacity-0 group-hover:opacity-100 
-              blur-lg transition-opacity duration-500" />
-          </Button>
-        </motion.div>
+            <h2 className="text-4xl md:text-6xl font-serif mb-8 relative inline-block font-medium">
+              Ready to Create Something Special?
+              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-32 h-px 
+                bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+            </h2>
+            <p className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed">
+              Let us help you plan your next extraordinary event. Our team is ready to create a unique experience tailored just for you.
+            </p>
+            <Button 
+              size="lg" 
+              className="bg-primary text-primary-foreground hover:bg-primary/90 
+                shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-500
+                group relative overflow-hidden"
+              onClick={() => {
+                const contactForm = document.getElementById('contact-form');
+                if (contactForm) {
+                  contactForm.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
+            >
+              <span className="relative z-10 flex items-center">
+                Start Planning Your Event
+                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 
+                  transition-transform duration-300" />
+              </span>
+              {/* Button hover effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/0 
+                via-white/20 to-primary/0 opacity-0 group-hover:opacity-100 
+                blur-lg transition-opacity duration-500" />
+            </Button>
+          </motion.div>
+        </Reveal>
       </section>
 
       {/* Footer */}
@@ -801,21 +798,23 @@ export default function LandingPage() {
         </div>
         <div className="relative max-w-7xl mx-auto py-16 px-6 lg:px-8">
           {/* Top Section with Logo */}
-          <div className="flex flex-col items-center mb-16">
-            <img 
-              src="/imgs/logo.png" 
-              alt="Blimey Logo" 
-              className="h-16 mb-6 hover:opacity-90 transition-all duration-300 hover:scale-105 
-                filter brightness-0 invert"
-            />
-            <p className="text-lg text-white/80 max-w-md text-center">
-              Crafting extraordinary culinary experiences for Egypt's most memorable moments
-            </p>
-            <div className="mt-8 relative">
-              <div className="h-px w-40 bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-              <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 rotate-45 border border-white/30" />
+          <Reveal duration={1}>
+            <div className="flex flex-col items-center mb-16">
+              <img 
+                src="/imgs/logo.png" 
+                alt="Blimey Logo" 
+                className="h-16 mb-6 hover:opacity-90 transition-all duration-300 hover:scale-105 
+                  filter brightness-0 invert"
+              />
+              <p className="text-lg text-white/80 max-w-md text-center">
+                Crafting extraordinary culinary experiences for Egypt's most memorable moments
+              </p>
+              <div className="mt-8 relative">
+                <div className="h-px w-40 bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+                <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 rotate-45 border border-white/30" />
+              </div>
             </div>
-          </div>
+          </Reveal>
 
           {/* Main Footer Grid */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 py-12 border-y border-white/10 
@@ -823,157 +822,168 @@ export default function LandingPage() {
             lg:gap-x-16">
             {/* Company Info */}
             <div className="md:col-span-5 space-y-6">
-              <h4 className="font-serif text-xl">About Blimey</h4>
-              <p className="text-muted-foreground leading-relaxed">
-                Egypt's premier luxury catering service, bringing sophistication and culinary excellence to your special occasions.
-              </p>
-              <div className="flex items-center space-x-4">
-                <a 
-                  href="#" 
-                  className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center 
-                    hover:bg-white/10 hover:scale-110 hover:rotate-6 transition-all duration-300 group 
-                    border border-white/10 hover:border-white/30"
-                >
-                  <Instagram className="w-5 h-5 text-white/70 group-hover:text-white transition-colors" />
-                </a>
-                <a 
-                  href="#" 
-                  className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center 
-                    hover:bg-white/10 hover:scale-110 hover:rotate-6 transition-all duration-300 group 
-                    border border-white/10 hover:border-white/30"
-                >
-                  <Facebook className="w-5 h-5 text-white/70 group-hover:text-white transition-colors" />
-                </a>
-                <a 
-                  href="#" 
-                  className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center 
-                    hover:bg-white/10 hover:scale-110 hover:rotate-6 transition-all duration-300 group 
-                    border border-white/10 hover:border-white/30"
-                >
-                  <Twitter className="w-5 h-5 text-white/70 group-hover:text-white transition-colors" />
-                </a>
-              </div>
-              <div className="space-y-4">
-                <div className="flex items-center space-x-3 text-muted-foreground">
-                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
-                    <MapPin className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <p className="font-medium text-white">Location</p>
-                    <p className="text-white/70">New Cairo, Egypt</p>
-                  </div>
+              <Reveal duration={1} delay={0.2}>
+                <h4 className="font-serif text-2xl font-medium">About Blimey</h4>
+                <p className="text-muted-foreground leading-relaxed">
+                  Egypt's premier luxury catering service, bringing sophistication and culinary excellence to your special occasions.
+                </p>
+                <div className="flex items-center space-x-4 mt-12 mb-12">
+                  <a 
+                    href="#" 
+                    className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center 
+                      hover:bg-white/10 hover:scale-110 hover:rotate-6 transition-all duration-300 group 
+                      border border-white/10 hover:border-white/30"
+                  >
+                    <Instagram className="w-5 h-5 text-white/70 group-hover:text-white transition-colors" />
+                  </a>
+                  <a 
+                    href="#" 
+                    className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center 
+                      hover:bg-white/10 hover:scale-110 hover:rotate-6 transition-all duration-300 group 
+                      border border-white/10 hover:border-white/30"
+                  >
+                    <Facebook className="w-5 h-5 text-white/70 group-hover:text-white transition-colors" />
+                  </a>
+                  <a 
+                    href="#" 
+                    className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center 
+                      hover:bg-white/10 hover:scale-110 hover:rotate-6 transition-all duration-300 group 
+                      border border-white/10 hover:border-white/30"
+                  >
+                    <Twitter className="w-5 h-5 text-white/70 group-hover:text-white transition-colors" />
+                  </a>
                 </div>
-                <div className="flex items-center space-x-3 text-muted-foreground">
-                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
-                    <PhoneCall className="w-5 h-5 text-white" />
-                  </div>
-                  <p className="text-white/70">+20 (0) 100 123 4567</p>
-                </div>
-                <div className="flex items-center space-x-3 text-muted-foreground">
-                  <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
-                    <Mail className="w-5 h-5 text-white" />
-                  </div>
-                  <p className="text-white/70">hello@blimey.eg</p>
-                </div>
-              </div>
-              <Button
-                variant="outline"
-                size="lg"
-                className="w-full bg-white/5 border-white/20 text-white hover:bg-white/95 
-                  hover:text-primary hover:scale-105 transition-all duration-300 shadow-xl 
-                  backdrop-blur-sm hover:border-transparent hover:shadow-white/20 
-                  hover:shadow-2xl group mt-8"
-              >
-                <span className="flex items-center justify-center">
-                  Download Menu
-                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 
-                    transition-transform duration-300" />
-                </span>
-              </Button>
+                 
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full bg-white/5 border-white/20 text-white hover:bg-white/95 
+                    hover:text-primary hover:scale-105 transition-all duration-300 shadow-xl 
+                    backdrop-blur-sm hover:border-transparent hover:shadow-white/20 
+                    hover:shadow-2xl group mt-8"
+                >
+                  <span className="flex items-center justify-center">
+                    Download Menu
+                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 
+                      transition-transform duration-300" />
+                  </span>
+                </Button>
+              </Reveal>
             </div>
 
             {/* Quick Links */}
             <div className="md:col-span-3">
-              <h4 className="font-serif text-xl mb-6 relative inline-block after:content-[''] 
-                after:absolute after:-bottom-2 after:left-0 after:w-8 after:h-px after:bg-primary/30">
-                Services
-              </h4>
-              <ul className="space-y-4">
-                {['Luxury Weddings', 'Corporate Events', 'Private Functions', 'Ramadan Gatherings'].map((item) => (
-                  <li key={item}>
-                    <a 
-                      href="#" 
-                      className="text-muted-foreground hover:text-primary transition-all duration-300 
-                        flex items-center group relative overflow-hidden"
-                    >
-                      <span className="absolute -left-full group-hover:left-0 w-full h-px bg-primary/30 
-                        transition-all duration-500 -bottom-px" />
-                      {item}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+              <Reveal duration={1} delay={0.4}>
+                <h4 className="font-serif text-xl mb-6 relative inline-block after:content-[''] 
+                  after:absolute after:-bottom-2 after:left-0 after:w-8 after:h-px after:bg-primary/30">
+                  Services
+                </h4>
+                <ul className="space-y-4">
+                  {['Luxury Weddings', 'Corporate Events', 'Private Functions', 'Ramadan Gatherings'].map((item) => (
+                    <li key={item}>
+                      <a 
+                        href="#" 
+                        className="text-muted-foreground hover:text-primary transition-all duration-300 
+                          flex items-center group relative overflow-hidden"
+                      >
+                        <span className="absolute -left-full group-hover:left-0 w-full h-px bg-primary/30 
+                          transition-all duration-500 -bottom-px" />
+                        {item}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </Reveal>
             </div>
 
             {/* Contact Info */}
             <div className="md:col-span-4 lg:col-span-4">
-             
-              <div className="mt-8 p-4 bg-white/5 rounded-lg border border-white/10 
-                backdrop-blur-sm hover:border-white/30 transition-all duration-500
-                hover:bg-white/10 group relative">
-                {/* Background glow effect */}
-                <div className="absolute inset-0 bg-white/5 rounded-lg blur-xl opacity-0 
-                  group-hover:opacity-100 transition-all duration-700" />
-                
-                {/* Icon and content */}
-                <div className="relative flex items-start space-x-4">
-                  <div className="p-3 bg-white/10 rounded-lg group-hover:scale-110 
-                    group-hover:bg-white/20 transition-all duration-500 relative">
-                    <div className="absolute inset-0 blur-xl bg-white/20 opacity-0 
-                      group-hover:opacity-100 transition-all duration-500" />
-                    <Clock className="w-5 h-5 text-white" />
+              <Reveal duration={1} delay={0.6}>
+                {/* Contact Details */}
+                <div className="space-y-4 mb-8">
+                  <div className="flex items-center space-x-3 text-muted-foreground">
+                    <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                      <MapPin className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <p className="font-medium text-white">Location</p>
+                      <p className="text-white/70">New Cairo, Egypt</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-medium mb-3 text-white">Business Hours</p>
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-center group/item">
-                        <span className="text-sm text-white/70 group-hover/item:text-white/90 
-                          transition-colors duration-300">Sunday - Thursday</span>
-                        <span className="text-sm text-white/90 font-medium">9:00 AM - 8:00 PM</span>
-                      </div>
-                      <div className="h-px w-full bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-                      <div className="flex justify-between items-center group/item">
-                        <span className="text-sm text-white/70 group-hover/item:text-white/90 
-                          transition-colors duration-300">Friday - Saturday</span>
-                        <span className="text-sm text-white/90 font-medium">10:00 AM - 6:00 PM</span>
+                  <div className="flex items-center space-x-3 text-muted-foreground">
+                    <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                      <PhoneCall className="w-5 h-5 text-white" />
+                    </div>
+                    <p className="text-white/70">+20 (0) 100 123 4567</p>
+                  </div>
+                  <div className="flex items-center space-x-3 text-muted-foreground">
+                    <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                      <Mail className="w-5 h-5 text-white" />
+                    </div>
+                    <p className="text-white/70">hello@blimey.eg</p>
+                  </div>
+                </div>
+                
+                {/* Business Hours Card */}
+                <div className="mt-8 p-4 bg-white/5 rounded-lg border border-white/10 
+                  backdrop-blur-sm hover:border-white/30 transition-all duration-500
+                  hover:bg-white/10 group relative">
+                  {/* Background glow effect */}
+                  <div className="absolute inset-0 bg-white/5 rounded-lg blur-xl opacity-0 
+                    group-hover:opacity-100 transition-all duration-700" />
+                  
+                  {/* Icon and content */}
+                  <div className="relative flex items-start space-x-4">
+                    <div className="p-3 bg-white/10 rounded-lg group-hover:scale-110 
+                      group-hover:bg-white/20 transition-all duration-500 relative">
+                      <div className="absolute inset-0 blur-xl bg-white/20 opacity-0 
+                        group-hover:opacity-100 transition-all duration-500" />
+                      <Clock className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <p className="font-medium mb-3 text-white">Business Hours</p>
+                      <div className="space-y-2">
+                        <div className="flex justify-between items-center group/item">
+                          <span className="text-sm text-white/70 group-hover/item:text-white/90 
+                            transition-colors duration-300">Sunday - Thursday</span>
+                          <span className="text-sm text-white/90 font-medium">9:00 AM - 8:00 PM</span>
+                        </div>
+                        <div className="h-px w-full bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                        <div className="flex justify-between items-center group/item">
+                          <span className="text-sm text-white/70 group-hover/item:text-white/90 
+                            transition-colors duration-300">Friday - Saturday</span>
+                          <span className="text-sm text-white/90 font-medium">10:00 AM - 6:00 PM</span>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </Reveal>
             </div>
           </div>
 
           {/* Bottom Section */}
-          <div className="pt-12 flex flex-col md:flex-row justify-between items-center gap-4 
-            text-sm text-white/70">
-            <p className="font-light">
-              &copy; {new Date().getFullYear()} Blimey Catering. All rights reserved.
-            </p>
-            <div className="flex items-center gap-6">
-              {['Terms', 'Privacy', 'Cookies'].map((item) => (
-                <a 
-                  key={item}
-                  href="#" 
-                  className="hover:text-white transition-colors relative group"
-                >
-                  {item}
-                  <span className="absolute -bottom-px left-0 w-0 h-px bg-white 
-                    group-hover:w-full transition-all duration-300 bg-white" />
-                </a>
-              ))}
+          <Reveal duration={1} delay={0.8}>
+            <div className="pt-12 flex flex-col md:flex-row justify-between items-center gap-4 
+              text-sm text-white/70">
+              <p className="font-light">
+                &copy; {new Date().getFullYear()} Blimey Catering. All rights reserved.
+              </p>
+              <div className="flex items-center gap-6">
+                {['Terms', 'Privacy', 'Cookies'].map((item) => (
+                  <a 
+                    key={item}
+                    href="#" 
+                    className="hover:text-white transition-colors relative group"
+                  >
+                    {item}
+                    <span className="absolute -bottom-px left-0 w-0 h-px bg-white 
+                      group-hover:w-full transition-all duration-300 bg-white" />
+                  </a>
+                ))}
+              </div>
             </div>
-          </div>
+          </Reveal>
         </div>
         <button 
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
