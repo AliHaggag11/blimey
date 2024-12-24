@@ -1,4 +1,4 @@
-import { motion, useTransform, useScroll, AnimatePresence } from "framer-motion";
+import { motion, useTransform, useScroll } from "framer-motion";
 import { Button } from "./ui/button";
 import { ChefHat, Calendar, Phone, ArrowRight, Star, Users, Instagram, Facebook, Twitter, MapPin, Mail, PhoneCall, Clock } from "lucide-react";
 import { PlaceholderImage } from "./ui/placeholder-image";
@@ -8,37 +8,16 @@ import { CustomCursor } from './ui/cursor';
 import { SmoothScroll } from './ui/smooth-scroll';
 import { CountUp } from "./ui/count-up";
 import { RevealText } from "./ui/reveal-text";
-import { ParallaxScroll } from "./ui/parallax-scroll";
 import { ImageGallery } from "./ui/image-gallery";
 import { Reveal } from "./ui/reveal";
-import { ScrollText } from "./ui/scroll-text";
 import { MenuModal } from "./ui/menu-modal";
 import { useState } from 'react';
-import { FormSuccess } from "./ui/form-success";
+import { Link } from 'react-router-dom';
+import { blogPosts } from '../data/blog-posts';
 
 export default function LandingPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
   const { scrollYProgress } = useScroll();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    setIsSubmitting(false);
-    setIsSuccess(true);
-    
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setIsSuccess(false);
-      const form = e.target as HTMLFormElement;
-      form.reset();
-    }, 3000);
-  };
 
   return (
     <div className="min-h-screen bg-background selection:bg-primary selection:text-primary-foreground">
@@ -143,9 +122,57 @@ export default function LandingPage() {
         </div>
       </motion.header>
 
-      {/* Services Section */}
-      <section className="py-24 px-4 md:px-8 bg-secondary relative overflow-hidden">
+      {/* About Us Section */}
+      <section className="py-24 bg-secondary relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-5" />
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
+          <Reveal duration={1}>
+            <SectionHeading
+              title="Our Story"
+              subtitle="A legacy of culinary excellence in Egypt"
+            />
+          </Reveal>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <Reveal delay={0.2} duration={1}>
+              <div className="space-y-6">
+                <p className="text-lg text-muted-foreground leading-relaxed">
+                  Founded in 2015, Blimey has redefined luxury catering in Egypt by blending traditional flavors with contemporary techniques. Our journey began with a simple vision: to create extraordinary culinary experiences that celebrate Egypt's rich gastronomic heritage.
+                </p>
+                <div className="grid grid-cols-2 gap-8 py-8">
+                  {[
+                    { label: "Events Catered", value: "500+" },
+                    { label: "Years Experience", value: "8+" },
+                    { label: "Expert Chefs", value: "15+" },
+                    { label: "Client Satisfaction", value: "100%" }
+                  ].map((stat) => (
+                    <div key={stat.label} className="text-center p-4 bg-secondary/50 rounded-lg">
+                      <p className="text-2xl font-serif mb-2">{stat.value}</p>
+                      <p className="text-sm text-muted-foreground">{stat.label}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+            
+            <Reveal delay={0.4} duration={1}>
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-transparent z-10" />
+                <PlaceholderImage 
+                  category="Chef"
+                  width={600}
+                  height={400}
+                  className="rounded-lg shadow-2xl"
+                />
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* Services Section */}
+      <section className="py-24 px-4 md:px-8 bg-background relative overflow-hidden">
+        <div className="absolute inset-0 pattern-bg opacity-5" />
         <div className="relative">
           <Reveal duration={1}>
             <SectionHeading
@@ -334,181 +361,6 @@ export default function LandingPage() {
         </Reveal>
       </section>
 
-      {/* Featured Events Section */}
-      <section className="py-24 px-4 bg-background relative overflow-hidden">
-        <div className="absolute inset-0 pattern-bg opacity-5" />
-        <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
-          <Reveal duration={1}>
-            <SectionHeading
-              title="Featured Events"
-              subtitle="From intimate gatherings to grand celebrations, we bring your vision to life"
-            />
-          </Reveal>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Luxury Weddings",
-                category: "Wedding Catering",
-                description: "Elegant celebrations crafted with love and attention to detail"
-              },
-              {
-                title: "Corporate Events",
-                category: "Corporate Catering",
-                description: "Professional catering solutions for business gatherings"
-              },
-              {
-                title: "Private Parties",
-                category: "Private Party",
-                description: "Intimate celebrations with personalized service"
-              }
-            ].map((event, index) => (
-              <Reveal
-                key={event.title}
-                delay={index * 0.3}
-                duration={1}
-                direction="up"
-                distance={50}
-              >
-                <motion.div
-                  className="group relative overflow-hidden rounded-xl cursor-pointer"
-                >
-                  <div className="aspect-[4/3] overflow-hidden">
-                    <PlaceholderImage 
-                      category={event.category}
-                      width={800}
-                      height={600}
-                      className="group-hover:scale-110"
-                    />
-                  </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-6 flex flex-col justify-end transform transition-transform group-hover:translate-y-0">
-                    <h3 className="text-2xl font-serif text-white mb-2">{event.title}</h3>
-                    <p className="text-white/80">{event.description}</p>
-                  </div>
-                </motion.div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Scrolling Text Section */}
-      <section className="relative overflow-hidden border-y border-primary/10">
-        <div className="relative">
-          <ScrollText 
-            baseVelocity={-2}
-          >
-            Luxury Catering • Fine Dining • Bespoke Events • Egyptian Excellence
-          </ScrollText>
-        </div>
-      </section>
-
-      {/* Menu Preview Section */}
-      <section className="py-24 px-4 relative overflow-hidden">
-        {/* Background Image with Frost Effect */}
-        <div className="absolute inset-0">
-          <img 
-            src="/imgs/saile-ilyas-SiwrpBnxDww-unsplash.jpg"
-            alt="Background"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 backdrop-blur-xl bg-black/40" />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/30 to-background/50" />
-          <div className="absolute inset-0 backdrop-filter backdrop-brightness-90" />
-        </div>
-
-        <div className="relative z-10 max-w-7xl mx-auto">
-          <Reveal duration={1}>
-            <SectionHeading
-              title="Our Signature Menus"
-              subtitle="A fusion of Egyptian heritage and international cuisine"
-            />
-          </Reveal>
-          
-          <ParallaxScroll offset={50}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-7xl mx-auto">
-              {[
-                {
-                  title: "Traditional Egyptian Feast",
-                  icon: <ChefHat className="w-8 h-8 text-primary" />,
-                  items: [
-                    "Mezze platter with homemade tahini",
-                    "Grilled kofta with aromatic spices",
-                    "Molokhia with tender duck",
-                    "Om Ali with premium nuts"
-                  ]
-                },
-                {
-                  title: "Modern Fusion Selection",
-                  icon: <Star className="w-8 h-8 text-primary" />,
-                  items: [
-                    "Dukkah-crusted salmon with citrus",
-                    "Zaatar-spiced lamb cutlets",
-                    "Truffle-infused koshari",
-                    "Baklava cheesecake fusion"
-                  ]
-                }
-              ].map((menu, index) => (
-                <Reveal
-                  key={menu.title}
-                  delay={index * 0.3}
-                  duration={1}
-                  direction={index % 2 === 0 ? 'left' : 'right'}
-                  distance={70}
-                >
-                  <motion.div 
-                    className="bg-background/95 rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-500
-                      border border-primary/5 hover:border-primary/10 relative group overflow-hidden
-                      backdrop-blur-sm hover:-translate-y-1"
-                    whileHover={{ scale: 1.02 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                  >
-                    {/* Background gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent 
-                      opacity-0 group-hover:opacity-100 transition-all duration-700" />
-                    
-                    {/* Animated border */}
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-700">
-                      <div className="absolute inset-y-0 left-0 w-[1px] bg-gradient-to-b from-transparent via-primary/20 to-transparent" />
-                      <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
-                      <div className="absolute inset-y-0 right-0 w-[1px] bg-gradient-to-b from-transparent via-primary/20 to-transparent" />
-                      <div className="absolute inset-x-0 bottom-0 h-[1px] bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
-                    </div>
-
-                    <div className="relative">
-                      <motion.div
-                        className="mb-6"
-                        whileHover={{ scale: 1.1, rotate: 5 }}
-                        transition={{ type: "spring", stiffness: 400 }}
-                      >
-                        {menu.icon}
-                      </motion.div>
-                      <h3 className="text-2xl font-serif mb-6 font-medium">{menu.title}</h3>
-                      <ul className="space-y-3">
-                        {menu.items.map((item, i) => (
-                          <motion.li
-                            key={item}
-                            className="flex items-center space-x-2"
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: i * 0.1 }}
-                          >
-                            <div className="w-1.5 h-1.5 rounded-full bg-primary/50 group-hover:bg-primary 
-                              transition-colors duration-300" />
-                            <span className="text-muted-foreground group-hover:text-foreground 
-                              transition-colors duration-300">{item}</span>
-                          </motion.li>
-                        ))}
-                      </ul>
-                    </div>
-                  </motion.div>
-                </Reveal>
-              ))}
-            </div>
-          </ParallaxScroll>
-        </div>
-      </section>
-
       {/* Testimonials Section */}
       <section className="py-24 px-4 bg-background relative overflow-hidden">
         {/* Background Pattern */}
@@ -594,161 +446,48 @@ export default function LandingPage() {
         </Reveal>
       </section>
 
-      {/* Contact Section (before CTA) */}
-      <section id="contact-form" className="py-24 px-4 bg-primary text-primary-foreground relative overflow-hidden">
-        {/* Background Effects */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_-20%,rgba(255,255,255,0.1),transparent)]" />
-          <div className="absolute inset-0 bg-[linear-gradient(60deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:20px_20px]" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_120%,rgba(255,255,255,0.08),transparent)]" />
-        </div>
+      {/* Blog Section */}
+      <section className="py-24 bg-secondary relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-5" />
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
+          <Reveal duration={1}>
+            <SectionHeading
+              title="Culinary Insights"
+              subtitle="Expert tips and trends from our kitchen to yours"
+            />
+          </Reveal>
 
-        <motion.div 
-          className="relative max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20"
-        >
-          <div className="relative">
-            <Reveal duration={1}>
-              <h2 className="text-4xl md:text-5xl font-serif mb-6 relative inline-block font-medium">
-                Get in Touch
-                <div className="absolute -bottom-4 left-0 w-32 h-[2px] bg-gradient-to-r from-white/40 to-transparent" />
-              </h2>
-              <p className="text-primary-foreground/80 mb-12 text-lg">
-                Let us bring Egyptian hospitality to your next event
-              </p>
-            </Reveal>
-            <div className="space-y-8">
-              {[
-                {
-                  icon: <Phone className="w-5 h-5" />,
-                  text: "+20 (0) 100 123 4567",
-                  label: "Call Us Anytime",
-                  href: "tel:+201001234567"
-                },
-                {
-                  icon: <Calendar className="w-5 h-5" />,
-                  text: "Available 7 days a week",
-                  label: "Business Hours",
-                  href: "#hours"
-                },
-                {
-                  icon: <ChefHat className="w-5 h-5" />,
-                  text: "Complimentary tasting sessions",
-                  label: "Special Offer",
-                  href: "#tastings"
-                }
-              ].map((item, index) => (
-                <Reveal key={item.label} delay={index * 0.2} duration={1}>
-                  <a 
-                    href={item.href}
-                    className="flex items-start space-x-4 group p-4 rounded-xl hover:bg-white/5 
-                      transition-all duration-500 relative"
-                  >
-                    {/* Hover border effect */}
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
-                      <div className="absolute inset-y-0 left-0 w-[1px] bg-gradient-to-b from-transparent via-white/20 to-transparent" />
-                      <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-                      <div className="absolute inset-y-0 right-0 w-[1px] bg-gradient-to-b from-transparent via-white/20 to-transparent" />
-                      <div className="absolute inset-x-0 bottom-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-                    </div>
-                    
-                    <div className="p-3 bg-white/10 rounded-lg group-hover:scale-110 
-                      group-hover:bg-white/20 transition-all duration-500 relative">
-                      <div className="absolute inset-0 blur-xl bg-white/20 opacity-0 group-hover:opacity-100 transition-all duration-500" />
-                      {item.icon}
-                    </div>
-                    <div>
-                      <p className="text-sm text-white/60 mb-1 group-hover:text-white/80 transition-colors duration-300">
-                        {item.label}
-                      </p>
-                      <p className="text-lg group-hover:translate-x-1 transition-transform duration-500">
-                        {item.text}
-                      </p>
-                    </div>
-                  </a>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-          
-          <div className="bg-white/10 p-8 rounded-xl backdrop-blur-sm border border-white/10
-            hover:border-white/20 transition-all duration-500 shadow-2xl relative group
-            hover:shadow-white/5 hover:-translate-y-1">
-            {/* Decorative corner */}
-            <div className="absolute -top-2 -right-2 w-12 h-12 border-t-2 border-r-2 border-white/20 rounded-tr-2xl" />
-            <div className="absolute -bottom-2 -left-2 w-12 h-12 border-b-2 border-l-2 border-white/20 rounded-bl-2xl" />
-
-            {/* Form glow effect */}
-            <div className="absolute -inset-1 bg-white/5 rounded-xl blur-2xl opacity-0 group-hover:opacity-100 transition-all duration-700" />
-
-            <form onSubmit={handleSubmit} className="space-y-6 relative">
-              <input
-                type="text"
-                placeholder="Your Name"
-                required
-                className="w-full p-4 rounded-lg bg-white/10 border border-white/20 text-white 
-                  placeholder:text-white/60 focus:border-white/40 focus:bg-white/20 
-                  transition-all duration-300 outline-none hover:bg-white/[0.15]"
-              />
-              <input
-                type="email"
-                placeholder="Email Address"
-                required
-                className="w-full p-4 rounded-lg bg-white/10 border border-white/20 text-white 
-                  placeholder:text-white/60 focus:border-white/40 focus:bg-white/20 
-                  transition-all duration-300 outline-none hover:bg-white/[0.15]"
-              />
-              <textarea
-                placeholder="Tell us about your event"
-                required
-                rows={4}
-                className="w-full p-4 rounded-lg bg-white/10 border border-white/20 text-white 
-                  placeholder:text-white/60 focus:border-white/40 focus:bg-white/20 
-                  transition-all duration-300 outline-none resize-none hover:bg-white/[0.15]"
-              />
-              <Button
-                size="lg"
-                type="submit"
-                className={`w-full bg-white/90 text-primary hover:bg-white group-hover:translate-y-[-2px]
-                  transition-all duration-500 shadow-lg hover:shadow-xl hover:scale-[1.02] 
-                  backdrop-blur-sm border border-white/20 hover:border-white/0
-                  relative overflow-hidden ${isSubmitting ? 'cursor-wait' : ''}`}
-                disabled={isSubmitting}
-              >
-                <span className={`transition-opacity duration-200 ${isSubmitting ? 'opacity-0' : 'opacity-100'}`}>
-                  <div className="flex items-center justify-center">
-                    Send Message
-                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300 
-                      relative z-10" />
-                  </div>
-                </span>
-                {/* Button hover effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/50 to-white/0 
-                  opacity-0 group-hover:opacity-100 blur-lg transition-opacity duration-500" />
-                {isSubmitting && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <motion.div
-                      className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full 
-                        shadow-[0_0_15px_rgba(255,255,255,0.3)]"
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {blogPosts.map((post, index) => (
+              <Reveal key={post.id} delay={index * 0.2} duration={1}>
+                <Link to={`/blog/${post.id}`} className="group cursor-pointer">
+                  <div className="relative overflow-hidden rounded-lg mb-4">
+                    <img 
+                      src={post.coverImage}
+                      alt={post.title}
+                      className="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-500"
                     />
+                    <div className="absolute top-4 left-4 bg-primary/90 text-primary-foreground px-3 py-1 rounded-full
+                      text-sm backdrop-blur-sm">{post.category}</div>
                   </div>
-                )}
-              </Button>
-            </form>
-
-            {/* Success Message */}
-            <AnimatePresence>
-              {isSuccess && <FormSuccess />}
-            </AnimatePresence>
+                  <h3 className="text-xl font-serif mb-2 group-hover:text-primary transition-colors duration-300">
+                    {post.title}
+                  </h3>
+                  <p className="text-muted-foreground mb-4">{post.excerpt}</p>
+                  <div className="flex items-center text-sm text-primary/80">
+                    <Clock className="w-4 h-4 mr-2" />
+                    <span>{post.readTime}</span>
+                  </div>
+                </Link>
+              </Reveal>
+            ))}
           </div>
-        </motion.div>
+        </div>
       </section>
 
       {/* CTA Section */}
       <section className="py-32 px-4 bg-background relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-5" />
-        {/* Background gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent" />
         
         <Reveal duration={1}>
@@ -790,12 +529,14 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-primary text-primary-foreground border-t border-border relative">
+      <footer className="bg-primary text-primary-foreground relative">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_-20%,rgba(255,255,255,0.1),transparent)]" />
           <div className="absolute inset-0 bg-[linear-gradient(60deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:20px_20px]" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_120%,rgba(255,255,255,0.08),transparent)]" />
         </div>
+
+        {/* Main footer content */}
         <div className="relative max-w-7xl mx-auto py-16 px-6 lg:px-8">
           {/* Top Section with Logo */}
           <Reveal duration={1}>
@@ -876,23 +617,43 @@ export default function LandingPage() {
               <Reveal duration={1} delay={0.4}>
                 <h4 className="font-serif text-xl mb-6 relative inline-block after:content-[''] 
                   after:absolute after:-bottom-2 after:left-0 after:w-8 after:h-px after:bg-primary/30">
-                  Services
+                  Quick Links
                 </h4>
-                <ul className="space-y-4">
-                  {['Luxury Weddings', 'Corporate Events', 'Private Functions', 'Ramadan Gatherings'].map((item) => (
-                    <li key={item}>
-                      <a 
-                        href="#" 
-                        className="text-muted-foreground hover:text-primary transition-all duration-300 
-                          flex items-center group relative overflow-hidden"
-                      >
-                        <span className="absolute -left-full group-hover:left-0 w-full h-px bg-primary/30 
-                          transition-all duration-500 -bottom-px" />
-                        {item}
-                      </a>
-                    </li>
+                <div className="grid grid-cols-1 gap-6">
+                  {[
+                    {
+                      title: 'Services',
+                      links: ['Luxury Weddings', 'Corporate Events', 'Private Parties', 'Ramadan Gatherings']
+                    },
+                    {
+                      title: 'Menus',
+                      links: ['Traditional Egyptian', 'International Cuisine', 'Fusion Selection', 'Desserts']
+                    }
+                  ].map((category) => (
+                    <div key={category.title} className="space-y-3">
+                      <h5 className="text-white/90 font-medium">{category.title}</h5>
+                      <ul className="space-y-2">
+                        {category.links.map((link) => (
+                          <li key={link}>
+                            <a 
+                              href="#" 
+                              className="text-white/70 hover:text-white transition-all duration-300 
+                                flex items-center group relative"
+                            >
+                              <span className="absolute -left-4 opacity-0 group-hover:opacity-100 
+                                group-hover:left-0 transition-all duration-300">
+                                <ArrowRight className="w-3 h-3" />
+                              </span>
+                              <span className="group-hover:translate-x-2 transition-transform duration-300">
+                                {link}
+                              </span>
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </Reveal>
             </div>
 
@@ -961,12 +722,14 @@ export default function LandingPage() {
               </Reveal>
             </div>
           </div>
+        </div>
 
-          {/* Bottom Section */}
-          <Reveal duration={1} delay={0.8}>
-            <div className="pt-12 flex flex-col md:flex-row justify-between items-center gap-4 
-              text-sm text-white/70">
-              <p className="font-light">
+        {/* Bottom Section with Copyright */}
+        <div className="relative border-t border-white/10 will-change-transform">
+          <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <div className="py-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/70 
+              transform translate3d(0,0,0)">
+              <p className="font-light select-none">
                 &copy; {new Date().getFullYear()} Blimey Catering. All rights reserved.
               </p>
               <div className="flex items-center gap-6">
@@ -974,17 +737,19 @@ export default function LandingPage() {
                   <a 
                     key={item}
                     href="#" 
-                    className="hover:text-white transition-colors relative group"
+                    className="hover:text-white transition-colors duration-200 relative group select-none"
                   >
                     {item}
                     <span className="absolute -bottom-px left-0 w-0 h-px bg-white 
-                      group-hover:w-full transition-all duration-300 bg-white" />
+                      group-hover:w-full transition-all duration-200 will-change-[width]" />
                   </a>
                 ))}
               </div>
             </div>
-          </Reveal>
+          </div>
         </div>
+
+        {/* Scroll to top button */}
         <button 
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           className="fixed bottom-8 right-8 w-10 h-10 rounded-full bg-white/10 

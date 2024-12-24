@@ -84,8 +84,48 @@ export default {
         'lg': '0 4px 6px rgba(0, 0, 0, 0.4)',
         '2xl': '0 4px 12px rgba(0, 0, 0, 0.5)',
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: 'none',
+            color: 'hsl(var(--foreground))',
+            hr: {
+              borderColor: 'hsl(var(--border))',
+              marginTop: '3em',
+              marginBottom: '3em'
+            },
+            'h1, h2, h3, h4': {
+              color: 'hsl(var(--foreground))',
+            },
+            a: {
+              color: 'hsl(var(--primary))',
+              '&:hover': {
+                color: 'hsl(var(--primary))',
+              },
+            },
+            strong: {
+              color: 'hsl(var(--foreground))',
+            },
+            code: {
+              color: 'hsl(var(--primary))',
+            },
+            blockquote: {
+              borderLeftColor: 'hsl(var(--primary))',
+              color: 'hsl(var(--foreground))',
+            },
+            'ul > li::marker': {
+              color: 'hsl(var(--primary))',
+            },
+            'ol > li::marker': {
+              color: 'hsl(var(--primary))',
+            }
+          },
+        },
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
 }
 
