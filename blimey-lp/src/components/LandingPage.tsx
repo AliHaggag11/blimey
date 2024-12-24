@@ -9,6 +9,7 @@ import { SmoothScroll } from './ui/smooth-scroll';
 import { CountUp } from "./ui/count-up";
 import { RevealText } from "./ui/reveal-text";
 import { ParallaxScroll } from "./ui/parallax-scroll";
+import { ImageGallery } from "./ui/image-gallery";
 
 export default function LandingPage() {
   const { scrollYProgress } = useScroll();
@@ -217,6 +218,18 @@ export default function LandingPage() {
               </motion.div>
             ))}
           </motion.div>
+        </div>
+      </section>
+
+      {/* Image Gallery Section */}
+      <section className="py-24 bg-background relative overflow-hidden">
+        <div className="absolute inset-0 pattern-bg opacity-5" />
+        <div className="relative">
+          <SectionHeading
+            title="Our Gallery"
+            subtitle="A glimpse into our world of culinary excellence and event mastery"
+          />
+          <ImageGallery />
         </div>
       </section>
 
