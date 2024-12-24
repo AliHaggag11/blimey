@@ -61,12 +61,23 @@ export default {
             transform: 'translateY(-20px) scale(1.1)',
             opacity: 0.8,
           }
+        },
+        "text-shimmer": {
+          "0%, 100%": {
+            "background-size": "200% 200%",
+            "background-position": "left center"
+          },
+          "50%": {
+            "background-size": "200% 200%",
+            "background-position": "right center"
+          }
         }
       },
       animation: {
         "fade-up": "fade-up 0.5s ease-out",
         "slow-zoom": "slow-zoom 20s ease-out forwards",
         'float': 'float 5s ease-in-out infinite',
+        "text-shimmer": "text-shimmer 8s ease-in-out infinite",
       },
       dropShadow: {
         'md': '0 4px 3px rgba(0, 0, 0, 0.3)',

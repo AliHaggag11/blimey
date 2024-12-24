@@ -7,6 +7,8 @@ import "./gradient-pattern.css";
 import { CustomCursor } from './ui/cursor';
 import { SmoothScroll } from './ui/smooth-scroll';
 import { CountUp } from "./ui/count-up";
+import { RevealText } from "./ui/reveal-text";
+import { ParallaxScroll } from "./ui/parallax-scroll";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -77,13 +79,11 @@ export default function LandingPage() {
             />
           </motion.div>
           
-          <motion.p
-            {...fadeInUp}
-            transition={{ delay: 0.2 }}
+          <RevealText
+            text="Welcome to"
+            delay={0.2}
             className="text-lg md:text-xl mb-4 font-medium tracking-[0.2em] uppercase text-white/90"
-          >
-            Welcome to
-          </motion.p>
+          />
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -137,34 +137,54 @@ export default function LandingPage() {
           
           <motion.div 
             className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-6 lg:px-8"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
           >
-            <div className="group p-8 bg-background rounded-xl shadow-sm hover:shadow-md transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 
-                group-hover:opacity-100 transition-opacity duration-500" />
-              <ChefHat className="w-12 h-12 mb-6 text-primary group-hover:scale-110 group-hover:rotate-3 transition-all duration-500" />
-              <h3 className="text-2xl font-serif mb-4">Bespoke Menus</h3>
-              <p className="text-muted-foreground leading-relaxed">
-                Customized culinary experiences tailored to your preferences and dietary requirements
-              </p>
-            </div>
-            <div className="group p-8 bg-background rounded-xl shadow-sm hover:shadow-md transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 
-                group-hover:opacity-100 transition-opacity duration-500" />
-              <Calendar className="w-12 h-12 mb-6 text-primary group-hover:scale-110 group-hover:rotate-3 transition-all duration-500" />
-              <h3 className="text-2xl font-serif mb-4">Event Planning</h3>
-              <p className="text-muted-foreground leading-relaxed">
-                Full-service event coordination and styling to create unforgettable moments
-              </p>
-            </div>
-            <div className="group p-8 bg-background rounded-xl shadow-sm hover:shadow-md transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 
-                group-hover:opacity-100 transition-opacity duration-500" />
-              <Phone className="w-12 h-12 mb-6 text-primary group-hover:scale-110 group-hover:rotate-3 transition-all duration-500" />
-              <h3 className="text-2xl font-serif mb-4">Personal Touch</h3>
-              <p className="text-muted-foreground leading-relaxed">
-                Dedicated support throughout your journey, ensuring every detail is perfect
-              </p>
-            </div>
+            {[
+              {
+                icon: <ChefHat className="w-12 h-12 mb-6 text-primary" />,
+                title: "Bespoke Menus",
+                description: "Customized culinary experiences tailored to your preferences"
+              },
+              {
+                icon: <Calendar className="w-12 h-12 mb-6 text-primary" />,
+                title: "Event Planning",
+                description: "Full-service event coordination and styling to create unforgettable moments"
+              },
+              {
+                icon: <Phone className="w-12 h-12 mb-6 text-primary" />,
+                title: "Personal Touch",
+                description: "Dedicated support throughout your journey, ensuring every detail is perfect"
+              }
+            ].map((service, index) => (
+              <motion.div
+                key={service.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{
+                  duration: 0.5,
+                  delay: index * 0.2,
+                  ease: [0.25, 1, 0.5, 1]
+                }}
+                className="group p-8 bg-background rounded-xl hover:shadow-xl transition-all duration-500
+                  hover:-translate-y-1 relative overflow-hidden"
+              >
+                <motion.div
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.5 + index * 0.2 }}
+                >
+                  {service.icon}
+                </motion.div>
+                <h3 className="text-2xl font-serif mb-4">{service.title}</h3>
+                <p className="text-muted-foreground">{service.description}</p>
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent 
+                  opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              </motion.div>
+            ))}
           </motion.div>
         </div>
       </section>
@@ -276,51 +296,53 @@ export default function LandingPage() {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="bg-background rounded-xl p-8 shadow-sm"
-            >
-              <h3 className="text-2xl font-serif mb-6">Traditional Egyptian Feast</h3>
-              <div className="space-y-4">
-                {[
-                  "Mezze platter with homemade tahini",
-                  "Grilled kofta with aromatic spices",
-                  "Molokhia with tender duck",
-                  "Om Ali with premium nuts"
-                ].map((item, index) => (
-                  <div key={index} className="flex items-center space-x-4">
-                    <div className="w-2 h-2 rounded-full bg-primary" />
-                    <p className="text-muted-foreground">{item}</p>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-            
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="bg-background rounded-xl p-8 shadow-sm"
-            >
-              <h3 className="text-2xl font-serif mb-6">Modern Fusion Selection</h3>
-              <div className="space-y-4">
-                {[
-                  "Dukkah-crusted salmon with citrus",
-                  "Zaatar-spiced lamb cutlets",
-                  "Truffle-infused koshari",
-                  "Baklava cheesecake fusion"
-                ].map((item, index) => (
-                  <div key={index} className="flex items-center space-x-4">
-                    <div className="w-2 h-2 rounded-full bg-primary" />
-                    <p className="text-muted-foreground">{item}</p>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          </div>
+          <ParallaxScroll offset={100}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              <motion.div 
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="bg-background rounded-xl p-8 shadow-sm"
+              >
+                <h3 className="text-2xl font-serif mb-6">Traditional Egyptian Feast</h3>
+                <div className="space-y-4">
+                  {[
+                    "Mezze platter with homemade tahini",
+                    "Grilled kofta with aromatic spices",
+                    "Molokhia with tender duck",
+                    "Om Ali with premium nuts"
+                  ].map((item, index) => (
+                    <div key={index} className="flex items-center space-x-4">
+                      <div className="w-2 h-2 rounded-full bg-primary" />
+                      <p className="text-muted-foreground">{item}</p>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+              
+              <motion.div 
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="bg-background rounded-xl p-8 shadow-sm"
+              >
+                <h3 className="text-2xl font-serif mb-6">Modern Fusion Selection</h3>
+                <div className="space-y-4">
+                  {[
+                    "Dukkah-crusted salmon with citrus",
+                    "Zaatar-spiced lamb cutlets",
+                    "Truffle-infused koshari",
+                    "Baklava cheesecake fusion"
+                  ].map((item, index) => (
+                    <div key={index} className="flex items-center space-x-4">
+                      <div className="w-2 h-2 rounded-full bg-primary" />
+                      <p className="text-muted-foreground">{item}</p>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
+          </ParallaxScroll>
         </motion.div>
       </section>
 
@@ -619,6 +641,35 @@ export default function LandingPage() {
             group-hover:-translate-y-0.5 transition-transform" />
         </button>
       </footer>
+
+      {/* Floating Elements */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+      >
+        {Array.from({ length: 10 }).map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 h-1 bg-primary/20 rounded-full"
+            style={{
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              scale: Math.random() * 0.5 + 0.5
+            }}
+            animate={{
+              y: [0, -20, 0],
+              opacity: [0.2, 0.5, 0.2]
+            }}
+            transition={{
+              duration: 3 + Math.random() * 2,
+              repeat: Infinity,
+              delay: Math.random() * 2
+            }}
+          />
+        ))}
+      </motion.div>
 
     </div>
   );
