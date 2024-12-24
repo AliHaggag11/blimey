@@ -52,9 +52,9 @@ export default function LandingPage() {
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
         >
-          {Array.from({ length: 20 }).map((_, i) => (
+          {Array.from({ length: 20 }).map(() => (
             <div
-              key={i}
+              key={Math.random()}
               className="absolute w-2 h-2 bg-white/10 rounded-full"
               style={{
                 top: `${Math.random() * 100}%`,
@@ -168,21 +168,58 @@ export default function LandingPage() {
                   delay: index * 0.2,
                   ease: [0.25, 1, 0.5, 1]
                 }}
-                className="group p-8 bg-background rounded-xl hover:shadow-xl transition-all duration-500
-                  hover:-translate-y-1 relative overflow-hidden"
+                className="group p-8 bg-background rounded-xl hover:shadow-2xl transition-all duration-700
+                  hover:-translate-y-2 relative overflow-hidden cursor-pointer
+                  border border-transparent hover:border-primary/10"
               >
+                {/* Background gradient effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent 
+                  opacity-0 group-hover:opacity-100 transition-all duration-700 ease-out" />
+                
+                {/* Animated border */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-700">
+                  <div className="absolute inset-y-0 left-0 w-[1px] bg-gradient-to-b from-transparent via-primary/20 to-transparent" />
+                  <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+                  <div className="absolute inset-y-0 right-0 w-[1px] bg-gradient-to-b from-transparent via-primary/20 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 h-[1px] bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+                </div>
+
                 <motion.div
                   initial={{ scale: 0.8, opacity: 0 }}
                   whileInView={{ scale: 1, opacity: 1 }}
                   viewport={{ once: true }}
-                  transition={{ delay: 0.5 + index * 0.2 }}
+                  transition={{ 
+                    delay: 0.5 + index * 0.2,
+                    duration: 0.7,
+                    ease: [0.25, 1, 0.5, 1]
+                  }}
+                  className="relative"
                 >
-                  {service.icon}
+                  <div className="relative group-hover:scale-110 group-hover:rotate-3 transition-transform duration-700">
+                    {service.icon}
+                    <div className="absolute inset-0 blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-700 bg-primary/20" />
+                  </div>
                 </motion.div>
-                <h3 className="text-2xl font-serif mb-4">{service.title}</h3>
-                <p className="text-muted-foreground">{service.description}</p>
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent 
-                  opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.7 + index * 0.2 }}
+                  className="relative"
+                >
+                  <h3 className="text-2xl font-serif mb-4 group-hover:text-primary transition-colors duration-700">
+                    {service.title}
+                  </h3>
+                  <p className="text-muted-foreground group-hover:text-foreground transition-colors duration-700">
+                    {service.description}
+                  </p>
+                </motion.div>
+                
+                {/* Hover indicator */}
+                <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-700 transform translate-y-2 group-hover:translate-y-0">
+                  <ArrowRight className="w-5 h-5 text-primary" />
+                </div>
               </motion.div>
             ))}
           </motion.div>
