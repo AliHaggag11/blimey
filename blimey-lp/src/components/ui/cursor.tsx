@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
 import { motion, useSpring } from 'framer-motion';
+import { useMediaQuery } from '@/hooks/use-media-query';
 
 export function CustomCursor() {
+  const isDesktop = useMediaQuery("(min-width: 768px)");
   const cursorSize = 30;
 
   // Single motion value for cursor position
@@ -17,6 +19,8 @@ export function CustomCursor() {
   });
 
   useEffect(() => {
+    if (!isDesktop) return;
+
     const updateMousePosition = (e: MouseEvent) => {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
@@ -27,7 +31,9 @@ export function CustomCursor() {
     return () => {
       window.removeEventListener('mousemove', updateMousePosition);
     };
-  }, [cursorX, cursorY]);
+  }, [cursorX, cursorY, isDesktop]);
+
+  if (!isDesktop) return null;
 
   const cursorStyles = {
     x: cursorX,
@@ -40,7 +46,7 @@ export function CustomCursor() {
     <>
       {/* Main cursor */}
       <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[100] mix-blend-difference will-change-transform"
+        className="fixed top-0 left-0 pointer-events-none z-[200] mix-blend-difference will-change-transform"
       >
         <motion.div
           className="rounded-full bg-white"
@@ -54,7 +60,7 @@ export function CustomCursor() {
 
       {/* Dot cursor */}
       <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[100] mix-blend-difference will-change-transform"
+        className="fixed top-0 left-0 pointer-events-none z-[200] mix-blend-difference will-change-transform"
       >
         <motion.div
           className="w-2 h-2 rounded-full bg-white"
@@ -64,7 +70,7 @@ export function CustomCursor() {
 
       {/* Glow effect */}
       <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[99] will-change-transform"
+        className="fixed top-0 left-0 pointer-events-none z-[199] will-change-transform"
       >
         <motion.div
           className="rounded-full bg-white blur-[20px] opacity-15"
