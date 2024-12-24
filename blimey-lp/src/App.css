@@ -35,4 +35,8 @@
   body {
     @apply bg-background text-foreground;
   }
+  /* Hide default cursor */
+  * {
+    cursor: none !important;
+  }
 }

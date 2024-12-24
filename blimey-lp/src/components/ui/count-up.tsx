@@ -8,13 +8,13 @@ interface CountUpProps {
   suffix?: string;
 }
 
-export function CountUp({ end, duration = 3, suffix = '' }: CountUpProps) {
+export function CountUp({ end, duration = 5, suffix = '' }: CountUpProps) {
   const [count, setCount] = useState(0);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const springValue = useSpring(0, {
-    stiffness: 50,
-    damping: 30,
+    stiffness: 30,
+    damping: 40,
     duration: duration * 1000,
   });
 
@@ -22,7 +22,7 @@ export function CountUp({ end, duration = 3, suffix = '' }: CountUpProps) {
     if (isInView) {
       const controls = animate(0, end, {
         duration: duration,
-        ease: [0.32, 0.72, 0, 1], // Custom easing function
+        ease: [0.22, 1, 0.36, 1],
         onUpdate(value) {
           springValue.set(value);
           setCount(Math.floor(value));
@@ -39,25 +39,26 @@ export function CountUp({ end, duration = 3, suffix = '' }: CountUpProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ 
-        duration: 0.8,
-        ease: [0.32, 0.72, 0, 1]
+        duration: 1.2,
+        ease: [0.22, 1, 0.36, 1]
       }}
       className="text-5xl font-serif mb-2 relative group"
     >
       <motion.span
         initial={{ scale: 1 }}
         animate={{ scale: 1 }}
-        whileInView={{ scale: 1.1 }}
+        whileInView={{ scale: 1.05 }}
         transition={{ 
-          duration: 0.3,
+          duration: 0.8,
           ease: "easeOut",
           delay: duration
         }}
+        className="inline-block"
       >
         {count.toLocaleString()}
-        <span className="inline-block ml-1">{suffix}</span>
+        <span className="inline-block ml-1 opacity-90">{suffix}</span>
       </motion.span>
-      <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-12 h-0.5 bg-gradient-to-r from-transparent via-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-12 h-0.5 bg-gradient-to-r from-transparent via-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
     </motion.div>
   );
 } 

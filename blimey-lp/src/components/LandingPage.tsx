@@ -231,7 +231,7 @@ export default function LandingPage() {
             className="text-center"
           >
             <Star className="w-8 h-8 mx-auto mb-4" />
-            <CountUp end={500} duration={3} suffix="+" />
+            <CountUp end={500} duration={6} suffix="+" />
             <p className="text-primary-foreground/80">Events Catered</p>
           </motion.div>
           <motion.div 
@@ -242,7 +242,7 @@ export default function LandingPage() {
             className="text-center"
           >
             <Users className="w-8 h-8 mx-auto mb-4" />
-            <CountUp end={50000} duration={4} suffix="+" />
+            <CountUp end={50000} duration={7} suffix="+" />
             <p className="text-primary-foreground/80">Happy Guests</p>
           </motion.div>
           <motion.div 
@@ -253,7 +253,7 @@ export default function LandingPage() {
             className="text-center"
           >
             <ChefHat className="w-8 h-8 mx-auto mb-4" />
-            <CountUp end={15} duration={2.5} suffix="+" />
+            <CountUp end={15} duration={5} suffix="+" />
             <p className="text-primary-foreground/80">Expert Chefs</p>
           </motion.div>
         </div>
