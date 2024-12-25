@@ -1,23 +1,24 @@
-import { motion } from "framer-motion";
 
 interface SectionHeadingProps {
   title: string;
   subtitle: string;
-  className?: string;
+  description?: string;
 }
 
-export function SectionHeading({ title, subtitle, className = "" }: SectionHeadingProps) {
+export function SectionHeading({ title, subtitle, description }: SectionHeadingProps) {
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className={`text-center mb-16 ${className}`}
-    >
-      <h2 className="text-4xl md:text-5xl font-serif mb-6 tracking-tight">{title}</h2>
-      <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
+    <div className="text-center max-w-3xl mx-auto mb-16">
+      <h3 className="text-primary mb-4 font-medium tracking-wide uppercase text-sm">
         {subtitle}
-      </p>
-    </motion.div>
+      </h3>
+      <h2 className="text-4xl md:text-5xl font-serif mb-6">
+        {title}
+      </h2>
+      {description && (
+        <p className="text-muted-foreground text-lg leading-relaxed">
+          {description}
+        </p>
+      )}
+    </div>
   );
 } 

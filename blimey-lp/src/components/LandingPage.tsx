@@ -1,6 +1,6 @@
 import { motion, useTransform, useScroll } from "framer-motion";
 import { Button } from "./ui/button";
-import { ChefHat, Calendar, Phone, ArrowRight, Star, Users, Instagram, Facebook, Twitter, MapPin, Mail, PhoneCall, Clock } from "lucide-react";
+import { ChefHat, Calendar, Phone, ArrowRight, Star, Users, Instagram, Facebook, Twitter, MapPin, Mail, PhoneCall, Clock, User, MessageSquare, Loader2, AlertTriangle, FileText, Download, ArrowLeft, Maximize2, Minimize2 } from "lucide-react";
 import { PlaceholderImage } from "./ui/placeholder-image";
 import { SectionHeading } from "./ui/section-heading";
 import "./gradient-pattern.css";
@@ -11,13 +11,80 @@ import { RevealText } from "./ui/reveal-text";
 import { ImageGallery } from "./ui/image-gallery";
 import { Reveal } from "./ui/reveal";
 import { MenuModal } from "./ui/menu-modal";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { blogPosts } from '../data/blog-posts';
+import ScrollBaseAnimation from '../components/ui/scroll-base-animation';
+import { cn } from '../lib/utils';
+
+// First, let's define the menu data structure at the top of the file
+const menuData = [
+  {
+    id: 'main',
+    title: 'À La Carte Menu',
+    description: 'Our signature dishes and seasonal specialties',
+    pdfUrl: '/menus/main-menu.pdf', // Add your PDF paths here
+    coverImage: '/imgs/menu-1.jpg',
+    category: 'Main Menu'
+  },
+  {
+    id: 'wedding',
+    title: 'Wedding Packages',
+    description: 'Curated selections for your special day',
+    pdfUrl: '/menus/wedding-menu.pdf',
+    coverImage: '/imgs/menu-2.jpg',
+    category: 'Events'
+  },
+  {
+    id: 'corporate',
+    title: 'Corporate Events',
+    description: 'Professional catering for business functions',
+    pdfUrl: '/menus/corporate-menu.pdf',
+    coverImage: '/imgs/menu-3.jpg',
+    category: 'Events'
+  },
+  {
+    id: 'ramadan',
+    title: 'Ramadan Special',
+    description: 'Traditional iftar and suhoor offerings',
+    pdfUrl: '/menus/ramadan-menu.pdf',
+    coverImage: '/imgs/menu-4.jpg',
+    category: 'Seasonal'
+  }
+];
 
 export default function LandingPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { scrollYProgress } = useScroll();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [isOverLightBg, setIsOverLightBg] = useState(false);
+  const [selectedMenu, setSelectedMenu] = useState<typeof menuData[0] | null>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  useEffect(() => {
+    const checkBackground = () => {
+      const button = document.getElementById('scroll-to-top');
+      if (!button) return;
+
+      const buttonRect = button.getBoundingClientRect();
+      const buttonCenter = {
+        x: buttonRect.left + buttonRect.width / 2,
+        y: buttonRect.top + buttonRect.height / 2
+      };
+
+      // Get the element at the button's position
+      const elementAtPoint = document.elementFromPoint(buttonCenter.x, buttonCenter.y);
+      if (!elementAtPoint) return;
+
+      // Check if the element or its parents have a light background
+      const isLight = elementAtPoint.closest('.bg-background, .bg-secondary');
+      setIsOverLightBg(!!isLight);
+    };
+
+    window.addEventListener('scroll', checkBackground);
+    return () => window.removeEventListener('scroll', checkBackground);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background selection:bg-primary selection:text-primary-foreground">
@@ -270,6 +337,21 @@ export default function LandingPage() {
           </motion.div>
         </div>
       </section>
+
+      {/* Scrolling Text */}
+      <div className="bg-primary py-8 relative overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_-20%,rgba(255,255,255,0.1),transparent)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(60deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:20px_20px]" />
+        </div>
+        <ScrollBaseAnimation 
+          baseVelocity={-1}
+          clasname="font-serif text-primary-foreground/90 font-medium tracking-tight"
+          scrollDependent={true}
+        >
+          Luxury Catering • Private Events • Corporate Functions • Weddings • Fine Dining • 
+        </ScrollBaseAnimation>
+      </div>
 
       {/* Image Gallery Section */}
       <section className="py-24 bg-background relative overflow-hidden">
@@ -528,6 +610,239 @@ export default function LandingPage() {
         </Reveal>
       </section>
 
+      {/* Contact Section */}
+      <section className="relative py-24 bg-primary/[0.02]">
+        {/* Background Effects */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(0,0,0,0.02),transparent)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(0,0,0,0.02)_1px,transparent_1px)] bg-[size:40px_40px]" />
+        </div>
+        
+        <div className="container relative max-w-6xl">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Left Column - CTA */}
+            <Reveal>
+              <div className="lg:pr-8">
+                <h2 className="text-4xl md:text-5xl font-serif mb-6">Let's Create Something Amazing</h2>
+                <p className="text-muted-foreground text-lg leading-relaxed mb-8">
+                  Ready to elevate your next event? Share your vision with us, and let's make it extraordinary together.
+                </p>
+                <div className="space-y-6">
+                  <div className="flex items-center gap-4 text-muted-foreground">
+                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Star className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-medium text-foreground">Premium Service</p>
+                      <p className="text-sm">Tailored to your unique needs</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4 text-muted-foreground">
+                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Clock className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-medium text-foreground">Quick Response</p>
+                      <p className="text-sm">We'll get back to you within 24 hours</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+
+            {/* Right Column - Form */}
+            <Reveal delay={0.2}>
+              <div className="relative">
+                <div className="absolute -inset-1 bg-gradient-to-r from-primary/30 to-primary/10 rounded-2xl blur-2xl opacity-20" />
+                <form 
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+                    setIsSubmitting(true);
+                    setSubmitStatus('idle');
+                    
+                    try {
+                      // Simulate API call
+                      await new Promise(resolve => setTimeout(resolve, 2000));
+                      setSubmitStatus('success');
+                      
+                      // Reset form
+                      const form = e.target as HTMLFormElement;
+                      form.reset();
+                    } catch (error) {
+                      setSubmitStatus('error');
+                    } finally {
+                      setIsSubmitting(false);
+                      
+                      // Reset status after 5 seconds
+                      setTimeout(() => {
+                        setSubmitStatus('idle');
+                      }, 5000);
+                    }
+                  }} 
+                  className="relative bg-background/40 backdrop-blur-xl p-8 rounded-2xl 
+                    border border-white/10 shadow-2xl space-y-6"
+                >
+                  <div className="grid grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label htmlFor="name" className="text-sm font-medium pl-1 flex items-center gap-2">
+                        <User className="w-4 h-4 text-primary/70" />
+                        <span>Name</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        required
+                        className="w-full px-4 py-3 rounded-xl bg-white/[0.03] border-2 border-white/5
+                          focus:border-primary/30 focus:bg-white/[0.07] 
+                          transition-all duration-300 outline-none hover:border-white/10
+                          placeholder:text-muted-foreground/40"
+                        placeholder="Your name"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label htmlFor="email" className="text-sm font-medium pl-1 flex items-center gap-2">
+                        <Mail className="w-4 h-4 text-primary/70" />
+                        <span>Email</span>
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        required
+                        className="w-full px-4 py-3 rounded-xl bg-white/[0.03] border-2 border-white/5
+                          focus:border-primary/30 focus:bg-white/[0.07] 
+                          transition-all duration-300 outline-none hover:border-white/10
+                          placeholder:text-muted-foreground/40"
+                        placeholder="your@email.com"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label htmlFor="message" className="text-sm font-medium pl-1 flex items-center gap-2">
+                      <MessageSquare className="w-4 h-4 text-primary/70" />
+                      <span>Message</span>
+                    </label>
+                    <textarea
+                      id="message"
+                      required
+                      rows={4}
+                      className="w-full px-4 py-3 rounded-xl bg-white/[0.03] border-2 border-white/5
+                        focus:border-primary/30 focus:bg-white/[0.07] 
+                        transition-all duration-300 outline-none hover:border-white/10
+                        placeholder:text-muted-foreground/40 resize-none"
+                      placeholder="Tell us about your event..."
+                    />
+                  </div>
+
+                  <Button 
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full bg-primary/90 text-primary-foreground hover:bg-primary
+                      shadow-xl hover:shadow-2xl transition-all duration-500 group
+                      rounded-xl py-6 relative overflow-hidden disabled:opacity-90 
+                      disabled:hover:bg-primary/90"
+                  >
+                    <span className="relative z-10 flex items-center justify-center font-medium">
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="w-5 h-5 mr-2 animate-spin opacity-70" />
+                          <span className="text-primary-foreground/70">Sending Message...</span>
+                        </>
+                      ) : (
+                        <>
+                          Send Message
+                          <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                        </>
+                      )}
+                    </span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent 
+                      via-white/20 to-transparent opacity-0 group-hover:opacity-100 
+                      blur-xl transition-opacity duration-500" />
+                  </Button>
+
+                  {/* Add status messages */}
+                  {submitStatus === 'success' && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="absolute inset-0 bg-background/95 border border-primary/20
+                        text-foreground rounded-xl backdrop-blur-sm shadow-2xl 
+                        flex items-center justify-center overflow-hidden"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-primary/30 via-primary/20 to-primary/30 opacity-90" />
+                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_-20%,rgba(255,255,255,0.1),transparent)]" />
+                      <div className="relative flex flex-col items-center gap-4 px-6 text-center">
+                        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                          >
+                            <Star className="w-6 h-6 text-primary" />
+                          </motion.div>
+                        </div>
+                        <div className="space-y-2">
+                          <h4 className="text-lg font-medium">Message Sent Successfully!</h4>
+                          <p className="text-sm text-muted-foreground">
+                            We'll get back to you within 24 hours.
+                          </p>
+                        </div>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setSubmitStatus('idle')}
+                          className="mt-2 bg-white/5 border-white/10 hover:bg-white/10"
+                        >
+                          Send Another Message
+                        </Button>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {submitStatus === 'error' && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="absolute inset-0 bg-background/95 border border-red-500/20
+                        text-foreground rounded-xl backdrop-blur-sm shadow-2xl 
+                        flex items-center justify-center overflow-hidden"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-red-500/30 via-red-500/20 to-red-500/30 opacity-90" />
+                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_-20%,rgba(255,255,255,0.1),transparent)]" />
+                      <div className="relative flex flex-col items-center gap-4 px-6 text-center">
+                        <div className="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center">
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                          >
+                            <AlertTriangle className="w-6 h-6 text-red-500" />
+                          </motion.div>
+                        </div>
+                        <div className="space-y-2">
+                          <h4 className="text-lg font-medium">Something Went Wrong</h4>
+                          <p className="text-sm text-muted-foreground">
+                            Please try again or contact us directly.
+                          </p>
+                        </div>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setSubmitStatus('idle')}
+                          className="mt-2 bg-white/5 border-white/10 hover:bg-white/10"
+                        >
+                          Try Again
+                        </Button>
+                      </div>
+                    </motion.div>
+                  )}
+                </form>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="bg-primary text-primary-foreground relative">
         <div className="absolute inset-0">
@@ -751,14 +1066,28 @@ export default function LandingPage() {
 
         {/* Scroll to top button */}
         <button 
+          id="scroll-to-top"
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="fixed bottom-8 right-8 w-10 h-10 rounded-full bg-white/10 
-            flex items-center justify-center transition-all duration-300 
-            hover:scale-110 border border-white/20 hover:border-white/40 
-            hover:bg-white/20 group backdrop-blur-sm"
+          className={cn(
+            "fixed bottom-8 right-8 w-10 h-10 rounded-full flex items-center justify-center",
+            "transition-all duration-300 hover:scale-110 backdrop-blur-sm z-50",
+            "border group",
+            isOverLightBg 
+              ? "bg-primary/90 hover:bg-primary border-primary/20 hover:border-primary/40" 
+              : "bg-white/10 hover:bg-white/20 border-white/20 hover:border-white/40"
+          )}
         >
-          <ArrowRight className="w-5 h-5 rotate-[-90deg] text-white 
-            group-hover:-translate-y-0.5 transition-transform" />
+          <ArrowRight 
+            className={cn(
+              "w-5 h-5 rotate-[-90deg] transition-all",
+              "group-hover:-translate-y-0.5",
+              isOverLightBg ? "text-primary-foreground" : "text-white"
+            )} 
+          />
+          <div className={cn(
+            "absolute inset-0 rounded-full blur-lg opacity-0 group-hover:opacity-30 transition-opacity",
+            isOverLightBg ? "bg-primary" : "bg-white"
+          )} />
         </button>
       </footer>
 
@@ -791,16 +1120,180 @@ export default function LandingPage() {
         ))}
       </motion.div>
 
-      <MenuModal isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)}>
-        <div className="p-4 sm:p-6 md:p-8">
-          <h2 className="text-3xl md:text-4xl font-serif mb-6 md:mb-8">Our Menus</h2>
-          <div className="aspect-[1/1.4] bg-muted rounded-lg flex items-center justify-center
-            border border-border/50">
-            <p className="text-muted-foreground text-center px-4">
-              <span className="block text-lg mb-2">Menu PDF Coming Soon</span>
-              <span className="text-sm">We're preparing something special for you</span>
-            </p>
-          </div>
+      <MenuModal isOpen={isMenuOpen} onClose={() => {
+        setIsMenuOpen(false);
+        setSelectedMenu(null);
+        setIsFullscreen(false);
+      }}>
+        <div className={cn(
+          "transition-all duration-300",
+          isFullscreen ? "p-0" : "p-4 sm:p-6 md:p-8 max-w-6xl mx-auto"
+        )}>
+          {!selectedMenu ? (
+            // Menu List View
+            <>
+              <h2 className="text-3xl md:text-4xl font-serif mb-8">Our Menus</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {menuData.map((menu) => (
+                  <motion.div
+                    key={menu.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="group relative bg-secondary/50 rounded-xl p-4 hover:bg-secondary/70 
+                      transition-all duration-500 border border-primary/10 hover:border-primary/20
+                      cursor-pointer"
+                    onClick={() => setSelectedMenu(menu)}
+                  >
+                    {/* Background Effects */}
+                    <div className="absolute inset-0 rounded-xl overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent 
+                        opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    </div>
+
+                    <div className="relative space-y-4">
+                      {/* Menu Header */}
+                      <div className="flex justify-between items-start gap-4">
+                        <div>
+                          <p className="text-sm text-primary/70 mb-1">{menu.category}</p>
+                          <h3 className="text-xl font-medium group-hover:text-primary transition-colors duration-300">
+                            {menu.title}
+                          </h3>
+                          <p className="text-muted-foreground text-sm mt-1">
+                            {menu.description}
+                          </p>
+                        </div>
+                        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center
+                          group-hover:bg-primary/20 transition-colors duration-300">
+                          <FileText className="w-5 h-5 text-primary" />
+                        </div>
+                      </div>
+
+                      {/* View Button */}
+                      <Button 
+                        variant="outline"
+                        className="w-full bg-white/5 border-white/10 hover:bg-white/10 
+                          group-hover:border-primary/20"
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent the card's onClick from firing
+                          setSelectedMenu(menu);
+                        }}
+                      >
+                        <span className="flex items-center gap-2">
+                          <FileText className="w-4 h-4" />
+                          View Menu
+                        </span>
+                      </Button>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </>
+          ) : (
+            // Selected Menu View
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className={cn(
+                "relative",
+                isFullscreen ? "h-screen" : "h-[80vh]"
+              )}
+            >
+              {/* Header */}
+              <div className={cn(
+                "flex items-center justify-between p-4 border-b border-border/10",
+                "bg-background/80 backdrop-blur-sm sticky top-0 z-10"
+              )}>
+                <div className="flex items-center gap-4">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setSelectedMenu(null)}
+                    className="hover:bg-background/80"
+                  >
+                    <ArrowLeft className="w-5 h-5" />
+                  </Button>
+                  <div>
+                    <h3 className="font-medium">{selectedMenu.title}</h3>
+                    <p className="text-sm text-muted-foreground">{selectedMenu.category}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setIsFullscreen(!isFullscreen)}
+                    className="hover:bg-background/80"
+                  >
+                    {isFullscreen ? (
+                      <Minimize2 className="w-5 h-5" />
+                    ) : (
+                      <Maximize2 className="w-5 h-5" />
+                    )}
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => window.open(selectedMenu.pdfUrl, '_blank')}
+                    className="hover:bg-background/80"
+                  >
+                    <Download className="w-5 h-5" />
+                  </Button>
+                </div>
+              </div>
+
+              {/* PDF Viewer */}
+              <div className="relative w-full h-[calc(100%-4rem)]">
+                <iframe
+                  src={`${selectedMenu.pdfUrl}#toolbar=0`}
+                  className="w-full h-full rounded-b-lg"
+                  title={selectedMenu.title}
+                />
+                
+                {/* Overlay for when PDF is not available */}
+                <div className="absolute inset-0 flex items-center justify-center bg-background/50 backdrop-blur-sm">
+                  <div className="text-center">
+                    <FileText className="w-12 h-12 text-primary/50 mx-auto mb-4" />
+                    <p className="text-lg font-medium mb-2">Preview Coming Soon</p>
+                    <p className="text-sm text-muted-foreground mb-6">
+                      We're preparing the menu preview for you
+                    </p>
+                    <Button
+                      variant="outline"
+                      onClick={() => window.open(selectedMenu.pdfUrl, '_blank')}
+                      className="bg-white/5"
+                    >
+                      <Download className="w-4 h-4 mr-2" />
+                      Download Menu
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Contact CTA - Only show in menu list view */}
+          {!selectedMenu && (
+            <div className="mt-12 text-center">
+              <p className="text-muted-foreground mb-4">
+                Looking for a custom menu? We'd love to create something special for your event.
+              </p>
+              <Button
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  setSelectedMenu(null);
+                  const contactForm = document.getElementById('contact-form');
+                  if (contactForm) {
+                    contactForm.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+                className="bg-primary/90 hover:bg-primary"
+              >
+                Contact Us
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </div>
+          )}
         </div>
       </MenuModal>
 
