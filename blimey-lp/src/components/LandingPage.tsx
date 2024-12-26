@@ -152,7 +152,7 @@ export default function LandingPage() {
             transition={{ delay: 0.6 }}
             className="text-xl md:text-2xl mb-12 font-medium max-w-2xl mx-auto text-white/90"
           >
-            Egypt's Premier Luxury Catering Experience
+             Premier Luxury Catering Experience
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
